@@ -20,7 +20,7 @@
 @author: moreira
 """
 
-from scipy import array, zeros, floor, sqrt, copy
+from scipy import array, zeros, floor
 import sys
 
 
@@ -41,15 +41,15 @@ class grid3d(object):
                                  # we can pass the others as a tuple                            
         if(type(index)==int):
             s = self.position(index) # index = (x + Nx* (y + Ny* z))
-            s[0] = check_boundary(s[0], phi.L0[0], phi.L1[0], phi.B0[0], phi.B1[0])
-            s[1] = check_boundary(s[1], phi.L0[1], phi.L1[1], phi.B0[1], phi.B1[1])
-            s[2] = check_boundary(s[2], phi.L0[2], phi.L1[2], phi.B0[2], phi.B1[2])
+            s[0] = check_boundary(s[0], self.L0[0], self.L1[0], self.B0[0], self.B1[0])
+            s[1] = check_boundary(s[1], self.L0[1], self.L1[1], self.B0[1], self.B1[1])
+            s[2] = check_boundary(s[2], self.L0[2], self.L1[2], self.B0[2], self.B1[2])
             return self.a[s[0],s[1],s[2]]
         else:
             i,j,k = index
-            i = check_boundary(i, phi.L0[0], phi.L1[0], phi.B0[0], phi.B1[0])
-            j = check_boundary(j, phi.L0[1], phi.L1[1], phi.B0[1], phi.B1[1])
-            k = check_boundary(k, phi.L0[2], phi.L1[2], phi.B0[2], phi.B1[2])
+            i = check_boundary(i, self.L0[0], self.L1[0], self.B0[0], self.B1[0])
+            j = check_boundary(j, self.L0[1], self.L1[1], self.B0[1], self.B1[1])
+            k = check_boundary(k, self.L0[2], self.L1[2], self.B0[2], self.B1[2])
             
             return self.a[i][j][k]
 
@@ -85,7 +85,7 @@ class grid3d(object):
         file.write("      <CellData> \n")
         file.write("        <DataArray Name=\"scalar_data\" type=\"Float64\" format=\"ascii\">\n")
         for i in range(0,self.nodes):
-            file.write(str(phi(i))+' '.rstrip('\n'))
+            file.write(str(self(i))+' '.rstrip('\n'))
         file.write("\n")
         file.write("         </DataArray> \n")    
         file.write("      </CellData> \n")
@@ -104,7 +104,7 @@ class grid3d(object):
 def laplacian(phi,index):
     s = phi.position(index)
     y = phi[index]
-    lapl = 0.0
+    laplacian_value = 0.0
     
     for i in range(0,phi.dim):
        
@@ -114,12 +114,45 @@ def laplacian(phi,index):
         yl = phi[s[0],s[1],s[2]]
         s[i] +=1         
         weight = 1.0/(phi.dr*phi.dr)
-        lapl += (yh + yl - 2.0*y) * weight
+        laplacian_value += (yh + yl - 2.0*y) * weight
 
     return lapl
+
+
+
+def gradient(phi,index):
+    gradient_value = array((0.0,0.0,0.0))
+    s = phi.position(index)
     
 
+    for i in range(0,phi.dim):
+        s[i] += 1
+        yh = phi[s[0],s[1],s[2]]
+        s[i] -= 2
+        yl = phi[s[0],s[1],s[2]]
+        s[i] += 1
 
+        weight = 1.0 / (2.0 * phi.dr);
+        gradient_value[i] = weight * (yh - yl);
+        
+    return gradient_value
+
+
+def divergence(u):
+    divergence_value = 0.0
+    
+    return divergence_value
+
+def shortcuts():
+    # defining functions shortcuts
+    global lapl  # the laplacian function can be called as lapl() or laplacian()
+    global grad  # the gradient function can be called as grad() or gradient()
+    global div  # the divergence function can be called as div() or divergence()
+    lapl = laplacian
+    grad = gradient
+    div = divergence 
+    return
+    
 def check_boundary(x, x0, x1, b0, b1):
     if(x<x0):
         if (b0 == 'Neumann' or b0 == 'Dirichlet'): 
