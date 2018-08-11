@@ -5,7 +5,7 @@ Created on Wed Aug  8 00:26:02 2018
 
 @author: moreira
 """
-import vtk
+
 from scipy import array, zeros, floor, sqrt, copy
 import sys
 
@@ -121,36 +121,3 @@ def check_boundary(x, x0, x1, b0, b1):
             x = x0 + (x - x1)
     return x
 
-
-
-
-L = [20,20,20]
-phi = grid3d(L[0],L[1],L[2])
-phit = grid3d(L[0],L[1],L[2])
-phit.a = copy(phi.a)
-
-for i in range(0,phi.nodes):
-    s = phi.position(i)
-    if(sqrt( (s[0]-L[0]/2)**2 + (s[1]-L[1]/2)**2 + (s[2]-L[2]/2)**2   )  <4.0):
-        phi[i] = 1.0
-
-
-
-nstep = 0
-tstep = 0
-dt = 0.005
-nprint = 0
-while(nstep<=tstep):
-    
-    for i in range(0,phi.nodes):
-        phit[i] = phi[i] + dt*( laplacian(phi,i) + phi[i]*(1.0-phi[i])*(0.5 - phi[i] ) )
-        
-    phi.a = copy(phit.a)
-    nstep+=1
-    nprint+=1
-    print(nstep)
-    if(nprint>=100):
-        nprint=0
-        
-        phi.output('out'+str(nstep)+'.vti')
-    
