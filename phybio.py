@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    This file is part of Phybio.
+    This file is part of PhyBio.
 
     PhyBio is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@
 
 from scipy import array, zeros, floor
 import sys
-
+# challenges:
+# how to enable 1D, 2D and 3D grids without repeating a lot of code?
+# how to handle arrays of arrays (Vectors) using numpy arrays?
 
 class grid3d(object):
 
