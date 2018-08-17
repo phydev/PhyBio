@@ -118,7 +118,7 @@ def laplacian(phi,index):
         weight = 1.0/(phi.dr*phi.dr)
         laplacian_value += (yh + yl - 2.0*y) * weight
 
-    return lapl
+    return laplacian_value
 
 
 
