@@ -8,11 +8,10 @@ from setuptools import setup, Extension
 
 setup(name='PhyBiopp',
     version='0.1',
-    ext_modules=[Extension('_PhyBiopp', sources=['src/PhyBio.cc','PhyBiopp.i'],
+    ext_modules=[Extension('_PhyBiopp', sources=['src/RegularGrid.cc','PhyBiopp.i'],
 #    				 include_dirs=['/usr/local/include/','./include'],
  #   				 library_dirs = ['/usr/local/lib/','./lib'],
 #    				 libraries = ['m','gsl'],
-                    swig_opts=['-c++'],
-                    )],
-    headers=['src/PhyBio.hh']
+                    swig_opts=['-c++'],)],
+    headers=['src/RegularGrid.hh']
 )

@@ -1,7 +1,6 @@
-// File : PhyBio.i to hold all the interface files together
+// File : PhyBiopp.i to hold all the interface files together
 %module PhyBiopp
 
-//%include "numpy.i"
-
-%include src/PhyBio.i
+//%include src/example.i
+%include src/RegularGrid.i
 
