@@ -1,31 +1,40 @@
 #ifndef REGULARGRID_HH
 #define REGULARGRID_HH
 
-// I'm pretty sure an N dimensional grid can easily
-// be achieved by a recursive template. But for us
-// this should be much more straight-forward. And
-// SWIG won't give us a headache...
 
-class grid2D{
-private:
-	
-	int length [2];
-	bool periodic [2];
-	double* data;
+namespace phybio
+{
+
+template <int dim, typename T> class grid;
+
+
+template <int dim, typename T>
+class grid{
 public:
 	
-	grid2D();
-	grid2D(int,int);
-	grid2D(int);
-	~grid2D();
-	void resize(int,int);
-	void setPeriodic(int,bool);
-	void setPeriodic(char,bool);
-	void setPeriodic(bool,bool);
-	
-	grid2D& operator=(const grid2D&);
-	double& operator()(int,int);
-	const double& operator()(int,int);
-};
+	grid(int vector_dim, int Lmax[dim], int BCondition[dim]);
 
+	grid(); // blank grid
+
+	~grid(); // destructor
+
+	
+
+protected:
+
+	#define dimMax 3
+
+	T* data;
+	int field_dim;
+	int vector_dim[dimMax];
+	int length[dimMax];
+	int bc[dimMax];
+	int np;
+
+
+
+}; // class grid
+} // namespace
+
+#include "RegularGrid.cc"
 #endif
