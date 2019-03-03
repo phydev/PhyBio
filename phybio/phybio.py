@@ -156,7 +156,16 @@ def shortcuts():
     return
     
 def check_boundary(x, x0, x1, b0, b1):
-    """ This routine was adapted from c++, written originally in https://github.com/mesoscale/mmsp  """
+     """ This routine was adapted from c++,
+         written originally in https://github.com/mesoscale/mmsp  
+         
+         x  (real) : is the coordinate your want to apply the boundary conditions
+         x0 (real) : lower boundary
+         x1 (real) : upper boundary
+         b0 (string) : condition for the lower boundary
+         b1 (string) : condition for the upper boundary
+         
+    """
     if(x<x0):
         if (b0 == 'Neumann' or b0 == 'Dirichlet'): 
             x = x0
