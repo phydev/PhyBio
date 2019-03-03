@@ -156,17 +156,20 @@ def shortcuts():
     return
     
 def check_boundary(x, x0, x1, b0, b1):
+    """ This routine was adapted from c++, written originally in https://github.com/mesoscale/mmsp  """
     if(x<x0):
         if (b0 == 'Neumann' or b0 == 'Dirichlet'): 
             x = x0
         elif (b0 == 'periodic'):
             x = x1 - (x0 - x)
         elif (b0 == 'mirror'):
-            x = 2 * x0 - x
+            x = 2*x0 - x
     elif(x>=x1):
         if (b1 == 'Neumann' or b1 == 'Dirichlet'):
             x = (x1 - 1)
         elif (b1 == 'periodic'):
             x = x0 + (x - x1)
+        elif (b1 == 'mirror'): 
+            x = 2*(x1 - 1) - x
     return x
 
